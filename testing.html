@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lalit Labana — Portfolio</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* --- VARIABLES --- */
+:root{
+  --bg: #0a192f;
+  --surface: #112240;
+  --text: #ccd6f6;
+  --text-heading: #e6f1ff;
+  --muted: #8892b0;
+  --accent: #64ffda;
+  --ghost-border: rgba(100, 255, 218, 0.2);
+  --btn-text: #0a192f;
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* --- RESET & BASE --- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:var(--font-main);
+  background:var(--bg); color:var(--text);
+  line-height:1.6;
+}
+h1,h2,h3,h4,h5{color:var(--text-heading); margin:0 0 1rem 0; font-weight:700;}
+p{margin-bottom:1rem; color:var(--muted);}
+a{text-decoration:none; color:var(--accent); transition:0.3s;}
+img{max-width:100%; display:block;}
+
+/* --- LAYOUT UTILS --- */
+section{padding:5rem 1.5rem; max-width:1100px; margin:0 auto;}
+.grid{display:grid; gap:1.5rem;}
+.grid-2{grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));}
+.grid-3{grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));}
+.grid-4{grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));}
+.section-title{margin-bottom: 2rem;}
+
+/* --- HEADER --- */
+header{
+  position:fixed; top:0; width:100%; height:80px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2rem; background:rgba(10, 25, 47, 0.95);
+  backdrop-filter:blur(10px); z-index:1000; box-shadow:0 10px 30px -10px rgba(2,12,27,0.7);
+}
+.brand{font-size:1.5rem; font-weight:800; color:var(--accent); letter-spacing:1px;}
+.nav-links{display:flex; gap:2rem; list-style:none; padding:0; margin:0;}
+.nav-links a{color:var(--text); font-size:0.9rem; font-weight:500;}
+.nav-links a:hover{color:var(--accent);}
+.nav-actions{display:flex; gap:1rem; align-items:center;}
+.hamburger{display:none; cursor:pointer; flex-direction:column; gap:6px;}
+.hamburger span{width:30px; height:2px; background:var(--accent); border-radius:2px;}
+
+@media(max-width:768px){
+  header{padding:0 1.5rem;}
+  .nav-links{
+    position:fixed; top:80px; right:0; height:calc(100vh - 80px); width:70%;
+    background:var(--surface); flex-direction:column; align-items:center; justify-content:center;
+    transform:translateX(100%); transition:0.3s ease-in-out; box-shadow:-10px 0 30px rgba(0,0,0,0.5);
+  }
+  .nav-links.active{transform:translateX(0);}
+  .hamburger{display:flex;}
+  .nav-links li{opacity:0; transform:translateX(20px); transition:0.3s;}
+  .nav-links.active li{opacity:1; transform:translateX(0);}
+}
+
+/* --- COMPONENTS --- */
+.btn{
+  padding:0.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; 
+  display:inline-block; border:1px solid var(--accent); transition:0.3s;
+}
+.btn-primary{background:var(--accent); color:var(--btn-text);}
+.btn-primary:hover{background:rgba(100, 255, 218, 0.8);}
+.btn-outline{background:transparent; color:var(--accent);}
+.btn-outline:hover{background:rgba(100, 255, 218, 0.1);}
+.btn-danger{background:#e74c3c; border-color:#e74c3c; color:white;}
+.icon-btn{background:transparent; border:none; color:var(--text); font-size:1.2rem; cursor:pointer;}
+
+.card{
+  background:var(--surface); padding:1.75rem; border-radius:8px;
+  box-shadow:0 10px 30px -15px rgba(2,12,27,0.7); transition:0.3s;
+  border:1px solid transparent; height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+}
+.card:hover{transform:translateY(-7px); border-color:var(--accent);}
+
+/* --- HERO --- */
+.hero{min-height:100vh; display:flex; align-items:center; padding-top:80px;}
+.hero-content{flex:1;}
+.hero-content h3{color:var(--accent); font-family:monospace; font-size:1.1rem; margin-bottom:1.5rem;}
+.hero-content h1{font-size:clamp(40px, 8vw, 70px); line-height:1.1; margin-bottom:10px; color:var(--text-heading);}
+.hero-content h2{font-size:clamp(30px, 5vw, 50px); color:var(--muted); margin-bottom:1.5rem;}
+.hero-content p{max-width:500px; font-size:1.1rem; margin-bottom:3rem;}
+.hero-img{flex:1; display:flex; justify-content:center;}
+.hero-avatar{
+  width:280px; height:280px; border-radius:50%; object-fit:cover;
+  border:2px solid var(--accent); box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  background: #112240;
+}
+@media(max-width:850px){ .hero{flex-direction:column-reverse; text-align:center;} .hero-img{margin-bottom:2rem;} .hero-content p{margin:0 auto 2rem;} }
+
+/* --- TIMELINE --- */
+.timeline-item{position:relative; padding-left:2rem; border-left:2px solid var(--surface); margin-bottom:2.5rem;}
+.timeline-item::before{
+  content:''; position:absolute; left:-6px; top:5px; width:10px; height:10px;
+  background:var(--accent); border-radius:50%; box-shadow:0 0 10px var(--accent);
+}
+.timeline-date{font-family:monospace; color:var(--accent); font-size:0.9rem; margin-bottom:0.5rem; display:block;}
+.timeline-title{font-size:1.3rem; color:var(--text-heading); margin-bottom:0.2rem;}
+.timeline-org{font-size:1rem; color:var(--text); font-weight:600;}
+
+/* --- SKILLS & CERTS --- */
+.skill-card{
+  background:var(--surface); padding:1.5rem; border-radius:8px; text-align:center;
+  transition:0.3s; border:1px solid transparent;
+}
+.skill-card:hover{border-color:var(--accent); transform:translateY(-5px); background:rgba(17, 34, 64, 0.8);}
+.skill-card i{font-size:2.5rem; margin-bottom:1rem; color:var(--accent);}
+.skill-card h4{margin:0; font-size:1rem; color:var(--text-heading);}
+
+.cert-card{
+  display:flex; align-items:flex-start; gap:1rem; padding:1.5rem; background:var(--surface);
+  border-radius:8px; border:1px solid rgba(255,255,255,0.05); transition:0.3s;
+}
+.cert-card:hover{background:rgba(17, 34, 64, 0.8); border-color:var(--accent);}
+.cert-icon{font-size:2rem; color:var(--accent); margin-top:5px;}
+
+/* --- FOOTER --- */
+footer{text-align:center; padding:2rem; color:var(--muted); font-size:0.9rem;}
+.social-footer{display:flex; justify-content:center; gap:1.5rem; margin-bottom:1rem;}
+.social-footer a{font-size:1.3rem; color:var(--muted);}
+.social-footer a:hover{color:var(--accent); transform:translateY(-3px);}
+
+/* --- ADMIN MODAL --- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0.8); 
+  display:none; justify-content:center; align-items:center; z-index:2000;
+  backdrop-filter: blur(5px);
+}
+.modal{
+  width:95%; max-width:900px; background:var(--bg); border:1px solid var(--ghost-border);
+  border-radius:8px; padding:2rem; max-height:90vh; overflow-y:auto;
+}
+.modal input, .modal textarea, .modal select{
+  width:100%; background:var(--surface); border:1px solid var(--ghost-border);
+  padding:10px; color:var(--text); border-radius:4px; margin-bottom:1rem; font-family: inherit;
+}
+.modal input:focus, .modal textarea:focus{border-color:var(--accent); outline:none;}
+
+.admin-tabs{display:flex; gap:10px; margin-bottom:1.5rem; border-bottom:1px solid var(--ghost-border); overflow-x: auto; padding-bottom: 5px;}
+.tab-btn{background:none; border:none; color:var(--muted); padding:10px 15px; cursor:pointer; white-space: nowrap;}
+.tab-btn.active{color:var(--accent); border-bottom:2px solid var(--accent);}
+
+.data-row{background:var(--surface); padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; border-radius:4px; border:1px solid rgba(255,255,255,0.05);}
+.loader{position:fixed; inset:0; background:var(--bg); display:flex; justify-content:center; align-items:center; z-index:9999;}
+.loader.hidden{opacity:0; pointer-events:none; transition:0.5s;}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <i class="fas fa-cube fa-3x fa-spin" style="color:var(--accent)"></i>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="brand">Co-Founder ApnaTraders </a>
+  <div class="nav-actions">
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="icon-btn" id="adminBtn" title="Admin Login"><i class="fas fa-lock"></i></button>
+    <!-- RESUME LINK -->
+    <a href="https://drive.google.com/file/d/1BNM8k9WCa6N0QmjErTj3t1ZXpCW3nzXD/view?usp=drivesdk" target="_blank" class="btn btn-outline">Resume</a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<main>
+  <!-- DYNAMIC HERO SECTION -->
+  <section id="about" class="hero"></section>
+
+  <!-- DYNAMIC EXPERIENCE SECTION -->
+  <section id="experience">
+    <h2 class="section-title"><span style="color:var(--accent)">01.</span> Experience & Education</h2>
+    <div class="grid grid-2" style="gap:3rem; margin-top:2rem;">
+      <div id="exp-col">
+        <h3 style="margin-bottom:1.5rem;"><i class="fas fa-briefcase"></i> Experience</h3>
+        <div id="experience-list"></div>
+      </div>
+      <div id="edu-col">
+        <h3 style="margin-bottom:1.5rem;"><i class="fas fa-graduation-cap"></i> Education</h3>
+        <div id="education-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DYNAMIC PROJECTS SECTION -->
+  <section id="projects">
+    <h2 class="section-title"><span style="color:var(--accent)">02.</span> Some Things I've Built</h2>
+    <div class="grid grid-2" id="projectsGrid"></div>
+  </section>
+
+  <!-- DYNAMIC SKILLS SECTION -->
+  <section id="skills">
+    <h2 class="section-title"><span style="color:var(--accent)">03.</span> Technical Skills</h2>
+    <div class="grid grid-4" id="skillsGrid" style="margin-top:2rem;"></div>
+  </section>
+
+  <!-- DYNAMIC CERTIFICATIONS -->
+  <section id="certifications">
+    <h2 class="section-title"><span style="color:var(--accent)">04.</span> Certifications</h2>
+    <div class="grid grid-2" id="certsGrid" style="margin-top:2rem;"></div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" style="text-align:center; max-width:600px;">
+    <p style="color:var(--accent); margin-bottom:1rem;">05. What's Next?</p>
+    <h2 style="font-size:3rem; margin-bottom:1.5rem;">Get In Touch</h2>
+    <p id="contact-text"></p>
+    
+    <form id="contactForm" style="text-align:left; margin-top:2rem;">
+      <div class="grid grid-2">
+        <input type="text" placeholder="Name" required class="modal-input" style="width:100%; padding:12px; background:var(--surface); border:1px solid var(--ghost-border); border-radius:4px; color:var(--text);">
+        <input type="email" placeholder="Email" required style="width:100%; padding:12px; background:var(--surface); border:1px solid var(--ghost-border); border-radius:4px; color:var(--text);">
+      </div>
+      <textarea rows="4" placeholder="Message" required style="width:100%; padding:12px; background:var(--surface); border:1px solid var(--ghost-border); border-radius:4px; color:var(--text); margin-top:1rem;"></textarea>
+      
+      <button type="submit" class="btn btn-primary" style="margin-top:1rem; width:100%;">Send Message</button>
+      
+      <!-- SUCCESS MESSAGE CONTAINER (Hidden by default) -->
+      <p id="form-message" style="margin-top:10px; font-weight:bold; color:var(--accent); display:none; text-align:center;"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div class="social-footer" id="footerSocials"></div>
+  <p>Designed & Built by <span id="footerName"></span></p>
+  <p style="font-size:0.8rem;">© 2025 MCA Portfolio</p>
+</footer>
+
+<!-- ADMIN DASHBOARD -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+      <h2>Admin Dashboard</h2>
+      <button class="icon-btn" id="closeModal"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Login -->
+    <div id="loginSection">
+      <p>Enter Admin PIN</p>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <input type="password" id="pinInput" placeholder="PIN">
+        <button class="btn btn-primary" id="loginBtn">Unlock</button>
+      </div>
+      <p id="loginMsg" style="color:#e74c3c; margin-top:10px;"></p>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" style="display:none;">
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-profile')">Profile</button>
+        <button class="tab-btn" onclick="switchTab('tab-exp')">Exp/Edu</button>
+        <button class="tab-btn" onclick="switchTab('tab-projects')">Projects</button>
+        <button class="tab-btn" onclick="switchTab('tab-skills')">Skills & Certs</button>
+      </div>
+
+      <!-- Tab: Profile -->
+      <div id="tab-profile" class="tab-content">
+        <h3>Edit Profile Info</h3>
+        <label style="font-size:0.8rem; color:var(--accent);">Name</label>
+        <input type="text" id="edit-name">
+        <label style="font-size:0.8rem; color:var(--accent);">Intro (Small Text)</label>
+        <input type="text" id="edit-intro">
+        <label style="font-size:0.8rem; color:var(--accent);">Heading 1</label>
+        <input type="text" id="edit-h1">
+        <label style="font-size:0.8rem; color:var(--accent);">Heading 2</label>
+        <input type="text" id="edit-h2">
+        <label style="font-size:0.8rem; color:var(--accent);">Bio</label>
+        <textarea id="edit-bio" rows="4"></textarea>
+        <label style="font-size:0.8rem; color:var(--accent);">Profile URL</label>
+        <input type="text" id="edit-img">
+        <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+      </div>
+
+      <!-- Tab: Experience/Education -->
+      <div id="tab-exp" class="tab-content" style="display:none;">
+        <div class="grid grid-2">
+            <div>
+                <h4 style="color:var(--accent);">Experience</h4>
+                <div id="admin-exp-list"></div>
+                <button class="btn btn-outline" onclick="addItem('experience')">+ Add Job</button>
+            </div>
+            <div>
+                <h4 style="color:var(--accent);">Education</h4>
+                <div id="admin-edu-list"></div>
+                <button class="btn btn-outline" onclick="addItem('education')">+ Add Education</button>
+            </div>
+        </div>
+      </div>
+
+      <!-- Tab: Projects -->
+      <div id="tab-projects" class="tab-content" style="display:none;">
+        <h4 style="color:var(--accent);">Projects</h4>
+        <div id="admin-proj-list"></div>
+        <button class="btn btn-primary" style="margin-top:1rem;" onclick="addItem('projects')">+ Add New Project</button>
+      </div>
+
+      <!-- Tab: Skills -->
+      <div id="tab-skills" class="tab-content" style="display:none;">
+        <h4 style="color:var(--accent);">Skills</h4>
+        <div id="admin-skills-list" class="grid grid-2"></div>
+        <button class="btn btn-primary" style="margin-top:1rem;" onclick="addItem('skills')">+ Add Skill</button>
+        
+        <h4 style="margin-top:2rem; color:var(--accent);">Certifications</h4>
+        <div id="admin-certs-list"></div>
+        <button class="btn btn-outline" onclick="addItem('certs')">+ Add Cert</button>
+      </div>
+
+      <div style="margin-top:2rem; border-top:1px solid var(--ghost-border); padding-top:1rem; display:flex; justify-content:space-between;">
+        <button class="btn btn-danger" onclick="resetData()">Reset to Default Data</button>
+        <button class="btn btn-outline" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* --- 1. DATA WITH ORIGINAL CONTENT --- */
+const STORAGE_KEY = 'lalit_portfolio_v2';
+const ADMIN_PIN = '7426';
+
+const defaultData = {
+  profile: {
+    name: "Lalit Labana",
+    intro: "Hi, my name is",
+    h1: "Lalit Labana.",
+    h2: "I build things for the web.",
+    bio: "I'm a Full Stack Java Developer and MCA student at Parul University. I focus on end-to-end development, integrating secure Java backends with dynamic frontends, while utilizing Python for advanced data and scripting needs.",
+    avatar: "Profile.jpg",
+    socials: [
+      {icon: "fab fa-github", link: "https://github.com/lalitlabana7"},
+      {icon: "fab fa-linkedin-in", link: "https://linkedin.com/in/lalitlabana"},
+    
+      {icon: "fab fa-whatsapp", link: "https://wa.me/917426866964"}
+    ]
+  },
+  experience: [
+    { 
+      id: 1, 
+      date: "Completed 2025", 
+      title: "Java Development Intern", 
+      org: "Qspiders", 
+      desc: "Hands-on experience in Java development, JDBC, and Object-Oriented Programming. Built scalable applications and learned industry best practices." 
+    }
+  ],
+  education: [
+    { 
+      id: 1, 
+      date: "2025 - Present", 
+      title: "Master of Computer Applications (MCA)", 
+      org: "Parul University, Vadodara", 
+      desc: "Specializing in Full Stack Development and Advanced Software Engineering." 
+    },
+    { 
+      id: 2, 
+      date: "2022 - 2025", 
+      title: "Bachelor of Computer Applications (BCA)", 
+      org: "Parul University, Vadodara", 
+      desc: "Graduated with distinction. Core focus on Data Structures, Algorithms, and Database Management." 
+    }
+  ],
+  projects: [
+    { 
+      id: 1, 
+      title: 'Bus Management System', 
+      desc: 'Complete bus management application with admin modules for adding/updating buses and user authentication.', 
+      tech: 'Java, SQL, Android, XML', 
+      link: 'https://github.com/lalitlabana7' 
+    },
+    { 
+      id: 2, 
+      title: 'Employee Survey Analysis', 
+      desc: 'Data analysis project visualizing employee survey insights using interactive charts and Python libraries.', 
+      tech: 'Python, Pandas, Plotly, Data Viz', 
+      link: 'https://github.com/lalitlabana7/Employee-Survey-Analysis.git' 
+    },
+    { 
+      id: 3, 
+      title: 'Netflix Stock Analysis', 
+      desc: 'Comprehensive stock performance analysis using Python with advanced data visualization techniques.', 
+      tech: 'Python, Matplotlib, NumPy', 
+      link: 'https://github.com/lalitlabana7/Netflix-Stock-Analysis.git' 
+    },
+    { 
+      id: 4, 
+      title: 'User Authentication System', 
+      desc: 'Secure login/signup system with user registration, session management and SQL database integration.', 
+      tech: 'Java, Android, MySQL', 
+      link: 'https://github.com/lalitlabana7' 
+    },
+       { 
+      id: 5, 
+      title: 'Hangman Game Using Python', 
+      desc: 'Going back to our old school days, some of the pen-paper games were always a top for our leisure time. Hangman was one, other than some chit games, to guess words according to the guesses determined and as soon as they lost all their wrong guesses, they were hanged (not really, but on paper 😉). That is an old way, now to play Hangman.', 
+      tech: 'Core Python,Jupyter Notebook', 
+      link: 'https://github.com/lalitlabana7/Hangman_Game_Python.git' 
+    }
+  ],
+  skills: [
+    { id: 1, name: 'Java', icon: 'fab fa-java' },
+    { id: 2, name: 'Python', icon: 'fab fa-python' },
+    { id: 3, name: 'Core JavaScript', icon: 'fab fa-js' },
+    { id: 4, name: 'Core  React', icon: 'fab fa-react' },
+    { id: 5, name: 'HTML5', icon: 'fab fa-html5' },
+    { id: 6, name: 'CSS3', icon: 'fab fa-css3-alt' },
+    { id: 7, name: 'SQL / MySQL', icon: 'fas fa-database' },
+    { id: 8, name: 'Android', icon: 'fab fa-android' },
+    { id: 9, name: 'Git / GitHub', icon: 'fab fa-github' },
+    { id: 10, name: 'VS Code', icon: 'fas fa-code' }
+  ],
+  certs: [
+    { id: 1, title: 'Programming in Java', issuer: 'NPTEL - IIT Kharagpur', sub: 'Elite Certification', icon: 'fas fa-certificate' },
+    { id: 2, title: 'Python for Data Science', issuer: 'IIT Bombay (Spoken Tutorial)', sub: 'Verified', icon: 'fab fa-python' },
+    { id: 3, title: 'Cisco Certified Network Associate (CCNA)', issuer: '31 CEUS/CPES', sub: 'Completed', icon: 'fas fa-database' },
+    { id: 4, title: 'Aws Cloud Quest : Cloud Practitioner', issuer: 'Certification', sub: '2024', icon: 'fas fa-layer-group' }
+  ]
+};
+
+/* --- 2. APP STATE & INIT --- */
+let appData = {};
+
+window.onload = () => {
+  loadData();
+  renderAll();
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 500);
+};
+
+function loadData() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    appData = JSON.parse(stored);
+   
+    if (!appData.profile) appData = JSON.parse(JSON.stringify(defaultData));
+  } else {
+    appData = JSON.parse(JSON.stringify(defaultData));
+  }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+  renderAll();
+  
+}
+
+function resetData() {
+  if(confirm("Reset all data to the original default? This cannot be undone.")) {
+    appData = JSON.parse(JSON.stringify(defaultData));
+    saveData();
+    location.reload();
+  }
+}
+
+/* --- 3. RENDERING ENGINE --- */
+function renderAll() {
+  // Hero
+  const heroHTML = `
+    <div class="hero-content">
+      <h3>${appData.profile.intro}</h3>
+      <h1>${appData.profile.h1}</h1>
+      <h2>${appData.profile.h2}</h2>
+      <p>${appData.profile.bio}</p>
+      <a href="#projects" class="btn btn-primary">Check out my work</a>
+    </div>
+    <div class="hero-img">
+      <img src="${appData.profile.avatar}" alt="Avatar" class="hero-avatar">
+    </div>
+  `;
+  document.getElementById('about').innerHTML = heroHTML;
+
+  // Contact Text
+  document.getElementById('contact-text').innerText = "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!";
+  document.getElementById('footerName').innerText = appData.profile.name;
+
+  // Socials
+  const socialHTML = appData.profile.socials.map(s => `<a href="${s.link}" target="_blank"><i class="${s.icon}"></i></a>`).join('');
+  document.getElementById('footerSocials').innerHTML = socialHTML;
+
+  // Lists
+  renderList('experience-list', appData.experience, item => `
+    <div class="timeline-item">
+      <span class="timeline-date">${item.date}</span>
+      <h4 class="timeline-title">${item.title}</h4>
+      <div class="timeline-org">${item.org}</div>
+      <p style="margin-top:0.5rem; font-size:0.95rem;">${item.desc}</p>
+    </div>
+  `);
+
+  renderList('education-list', appData.education, item => `
+    <div class="timeline-item">
+      <span class="timeline-date">${item.date}</span>
+      <h4 class="timeline-title">${item.title}</h4>
+      <div class="timeline-org">${item.org}</div>
+      <p style="margin-top:0.5rem; font-size:0.95rem;">${item.desc}</p>
+    </div>
+  `);
+
+  renderList('projectsGrid', appData.projects, item => `
+    <div class="card">
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+          <i class="far fa-folder" style="font-size:2rem; color:var(--accent);"></i>
+          <a href="${item.link}" target="_blank" class="icon-btn"><i class="fab fa-github"></i></a>
+        </div>
+        <h3 style="font-size:1.3rem; margin-bottom:0.5rem; color:var(--text-heading);">${item.title}</h3>
+        <p style="font-size:0.9rem;">${item.desc}</p>
+      </div>
+      <div style="margin-top:1rem;">
+        ${item.tech.split(',').map(t => `<span style="font-family:monospace; color:var(--accent); font-size:0.8rem; margin-right:10px;">${t.trim()}</span>`).join('')}
+      </div>
+    </div>
+  `);
+
+  renderList('skillsGrid', appData.skills, item => `
+    <div class="skill-card">
+      <i class="${item.icon}"></i>
+      <h4>${item.name}</h4>
+    </div>
+  `);
+
+  renderList('certsGrid', appData.certs, item => `
+    <div class="cert-card">
+      <i class="${item.icon} cert-icon"></i>
+      <div>
+        <h4>${item.title}</h4>
+        <p class="muted" style="margin:0; font-size:0.9rem;">${item.issuer}</p>
+        <small style="color:var(--accent)">${item.sub}</small>
+      </div>
+    </div>
+  `);
+}
+
+function renderList(elementId, dataArray, templateFn) {
+  document.getElementById(elementId).innerHTML = dataArray.map(templateFn).join('');
+}
+
+/* --- 4. ADMIN LOGIC --- */
+const modal = document.getElementById('modalBackdrop');
+document.getElementById('adminBtn').onclick = () => modal.style.display = 'flex';
+document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
+
+document.getElementById('loginBtn').onclick = () => {
+  if (document.getElementById('pinInput').value === ADMIN_PIN) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    loadAdminForms();
+  } else {
+    document.getElementById('loginMsg').innerText = "Incorrect PIN";
+  }
+};
+
+function logout() {
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('adminContent').style.display = 'none';
+  document.getElementById('pinInput').value = '';
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).style.display = 'block';
+  event.target.classList.add('active');
+}
+
+function loadAdminForms() {
+  // Profile
+  document.getElementById('edit-name').value = appData.profile.name;
+  document.getElementById('edit-intro').value = appData.profile.intro;
+  document.getElementById('edit-h1').value = appData.profile.h1;
+  document.getElementById('edit-h2').value = appData.profile.h2;
+  document.getElementById('edit-bio').value = appData.profile.bio;
+  document.getElementById('edit-img').value = appData.profile.avatar;
+
+  // Generate Lists
+  generateAdminList('admin-exp-list', 'experience', ['date', 'title', 'org', 'desc']);
+  generateAdminList('admin-edu-list', 'education', ['date', 'title', 'org', 'desc']);
+  generateAdminList('admin-proj-list', 'projects', ['title', 'desc', 'tech', 'link']);
+  generateAdminList('admin-skills-list', 'skills', ['name', 'icon']);
+  generateAdminList('admin-certs-list', 'certs', ['title', 'issuer', 'sub', 'icon']);
+}
+
+function saveProfile() {
+  appData.profile.name = document.getElementById('edit-name').value;
+  appData.profile.intro = document.getElementById('edit-intro').value;
+  appData.profile.h1 = document.getElementById('edit-h1').value;
+  appData.profile.h2 = document.getElementById('edit-h2').value;
+  appData.profile.bio = document.getElementById('edit-bio').value;
+  appData.profile.avatar = document.getElementById('edit-img').value;
+  saveData();
+  alert('Profile updated!');
+}
+
+function generateAdminList(containerId, dataKey, fields) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  
+  appData[dataKey].forEach((item, index) => {
+    const row = document.createElement('div');
+    row.className = 'data-row';
+    
+   
+    const inputsDiv = document.createElement('div');
+    inputsDiv.style.flex = '1';
+    inputsDiv.style.marginRight = '10px';
+    
+    fields.forEach(field => {
+      const input = document.createElement('input');
+      input.value = item[field] || '';
+      input.placeholder = field.toUpperCase();
+      input.style.marginBottom = '5px';
+      input.title = field; 
+      input.onchange = (e) => {
+        appData[dataKey][index][field] = e.target.value;
+        saveData(); 
+      };
+      inputsDiv.appendChild(input);
+    });
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn btn-danger';
+    delBtn.innerText = 'Del';
+    delBtn.style.padding = '5px 10px';
+    delBtn.onclick = () => {
+      if(confirm('Delete this item?')) {
+        appData[dataKey].splice(index, 1);
+        saveData();
+        loadAdminForms(); 
+      }
+    };
+
+    row.appendChild(inputsDiv);
+    row.appendChild(delBtn);
+    container.appendChild(row);
+  });
+}
+
+function addItem(key) {
+  let newItem = { id: Date.now() };
+  if(key === 'experience' || key === 'education') newItem = {...newItem, date:'2025', title:'Title', org:'Organization', desc:'Description'};
+  if(key === 'projects') newItem = {...newItem, title:'New Project', desc:'Description', tech:'Tech 1, Tech 2', link:'#'};
+  if(key === 'skills') newItem = {...newItem, name:'Skill Name', icon:'fas fa-code'};
+  if(key === 'certs') newItem = {...newItem, title:'Cert Name', issuer:'Issuer', sub:'Status', icon:'fas fa-certificate'};
+  
+  appData[key].unshift(newItem); 
+  saveData();
+  loadAdminForms();
+  // Switch to relevant tab
+  if(key === 'skills' || key === 'certs') switchTab('tab-skills');
+  if(key === 'projects') switchTab('tab-projects');
+  if(key === 'experience' || key === 'education') switchTab('tab-exp');
+}
+
+// Mobile Hamburger Logic
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+  const spans = hamburger.querySelectorAll('span');
+  if(navLinks.classList.contains('active')){
+    spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+  } else {
+    spans[0].style.transform = 'none';
+    spans[1].style.opacity = '1';
+    spans[2].style.transform = 'none';
+  }
+});
+
+/* --- FIXED CONTACT FORM LOGIC (MESSAGE BELOW BUTTON) --- */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Stop page reload
+    
+    // Show success message
+    const msgBox = document.getElementById('form-message');
+    msgBox.style.display = 'block';
+    msgBox.innerText = 'Message sent successfully!';
+    
+    // Clear input fields
+    this.reset(); 
+
+    // Optional: Hide message after 3 seconds
+    setTimeout(() => {
+        msgBox.style.display = 'none';
+    }, 3000);
+});
+</script>
+</body>
+</html>
